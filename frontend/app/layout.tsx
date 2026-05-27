@@ -7,8 +7,8 @@ const geistSans = Inter({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = JetBrains_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI Meeting Scheduler",
-  description: "Schedule meetings with natural language — powered by GPT-4o & Whisper",
+  title: "Prompt2Meet",
+  description: "Schedule meetings with natural language — powered by Gemini 2.5 Flash",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

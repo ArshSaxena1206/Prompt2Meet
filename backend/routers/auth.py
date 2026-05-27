@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import RedirectResponse
+from typing import Optional
 from google_auth_oauthlib.flow import Flow
 import structlog
 
@@ -34,6 +35,7 @@ def _get_flow() -> Flow:
         },
         scopes=SCOPES,
         redirect_uri=settings.GOOGLE_REDIRECT_URI,
+        autogenerate_code_verifier=False,
     )
 
 
@@ -50,19 +52,16 @@ async def login():
 
 
 @router.get("/callback")
-async def callback(code: str, state: str = None):
+async def callback(code: str, state: Optional[str] = None):
     """Handle Google OAuth callback, exchange code for tokens."""
     flow = _get_flow()
     try:
         flow.fetch_token(code=code)
         creds = flow.credentials
 
-        # Return tokens to frontend (in production: use httpOnly cookies or session)
-        return {
-            "access_token": creds.token,
-            "refresh_token": creds.refresh_token,
-            "token_expiry": creds.expiry.isoformat() if creds.expiry else None,
-        }
+        frontend_url = settings.ALLOWED_ORIGINS.split(",")[0]
+        redirect_url = f"{frontend_url}/#access_token={creds.token}"
+        return RedirectResponse(url=redirect_url)
     except Exception as e:
         logger.error("OAuth callback failed", error=str(e))
         raise HTTPException(status_code=400, detail=f"OAuth failed: {str(e)}")

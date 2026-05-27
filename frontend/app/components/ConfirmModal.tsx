@@ -8,7 +8,7 @@ import type { ParsedIntent, ConfirmResponse } from "../lib/api";
 interface ConfirmModalProps {
   intent: ParsedIntent;
   rawPrompt: string;
-  onConfirm: (intent: ParsedIntent) => Promise<ConfirmResponse>;
+  onConfirm: (intent: ParsedIntent) => Promise<ConfirmResponse | undefined>;
   onClose: () => void;
 }
 
@@ -24,7 +24,11 @@ export default function ConfirmModal({ intent, rawPrompt, onConfirm, onClose }: 
     setLoading(true);
     try {
       const result = await onConfirm(intent);
-      setConfirmed(result);
+      if (result) {
+        setConfirmed(result);
+      } else {
+        onClose();
+      }
     } finally {
       setLoading(false);
     }

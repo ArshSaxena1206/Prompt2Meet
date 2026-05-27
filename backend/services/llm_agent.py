@@ -100,7 +100,7 @@ async def extract_meeting_intent(
 
     try:
         model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
+            model_name="gemini-2.5-flash",
             system_instruction=system
         )
 
@@ -140,7 +140,7 @@ async def generate_meeting_title(prompt: str) -> str:
     """Generate a clean, professional meeting title from raw prompt."""
     try:
         model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
+            model_name="gemini-2.5-flash",
             system_instruction="Generate a concise, professional meeting title (max 8 words) from the user's prompt. Return only the title, nothing else."
         )
         response = await model.generate_content_async(prompt)
