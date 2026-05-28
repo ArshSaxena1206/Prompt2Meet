@@ -147,16 +147,19 @@ async def confirm_meeting(
 
     # 4. Create Google Calendar event
     attendee_emails = [a["email"] for a in resolved_attendees]
-    calendar_result = await create_event(
-        access_token=body.access_token,
-        title=intent["title"],
-        start_time=start_time,
-        end_time=end_time,
-        attendee_emails=attendee_emails,
-        agenda=intent.get("agenda"),
-        organizer_email=body.organizer_email,
-        timezone=body.timezone,
-    )
+    try:
+        calendar_result = await create_event(
+            access_token=body.access_token,
+            title=intent["title"],
+            start_time=start_time,
+            end_time=end_time,
+            attendee_emails=attendee_emails,
+            agenda=intent.get("agenda"),
+            organizer_email=body.organizer_email,
+            timezone=body.timezone,
+        )
+    except RuntimeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
     # 5. Send email invitations via SendGrid
     await send_meeting_invite(

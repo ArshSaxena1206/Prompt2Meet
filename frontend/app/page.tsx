@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, FormEvent } from "react";
-import { Send, Sparkles, Calendar, Bot, User, AlertCircle, CheckCircle2, RefreshCw } from "lucide-react";
+import { Send, Sparkles, Calendar, Bot, User, AlertCircle, CheckCircle2, RefreshCw, LayoutDashboard, CalendarDays, Settings } from "lucide-react";
+import Link from "next/link";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
 
@@ -209,7 +210,7 @@ export default function HomePage() {
       toast.error(msg);
       addMessage({
         role: "assistant",
-        content: `❌ I couldn't schedule the meeting because the Google Calendar API rejected the mock token. You need to implement real Google OAuth to create actual calendar events! (Error: ${msg})`,
+        content: `❌ I couldn't schedule the meeting. (Error: ${msg})`,
         type: "error",
       });
       setConfirmIntent(null);
@@ -340,6 +341,22 @@ export default function HomePage() {
             </div>
             <span className="font-semibold text-text-primary text-sm">Prompt2Meet</span>
             <span className="text-[10px] text-accent bg-accent-soft px-1.5 py-0.5 rounded font-medium">Gemini 2.5 Flash</span>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="hidden md:flex items-center gap-1 ml-4">
+            <Link href="/dashboard" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-text-secondary hover:text-accent hover:bg-accent-soft transition">
+              <LayoutDashboard size={13} />
+              Dashboard
+            </Link>
+            <Link href="/calendar" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-text-secondary hover:text-accent hover:bg-accent-soft transition">
+              <CalendarDays size={13} />
+              Calendar
+            </Link>
+            <Link href="/settings" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-text-secondary hover:text-accent hover:bg-accent-soft transition">
+              <Settings size={13} />
+              Settings
+            </Link>
           </div>
 
           <div className="ml-auto flex items-center gap-2">

@@ -17,7 +17,7 @@ An end-to-end intelligent meeting scheduling system powered by Google Gemini 1.5
         │                   │                   │
         ▼                   ▼                   ▼
      Google Gemini      Google Cal           Resend
-     1.5 Flash (LLM)    API (CRUD)            Email
+     2.5 Flash (LLM)    API (CRUD)            Email
         │
         ▼
    PostgreSQL (logs, meetings, users) via Docker / Supabase
